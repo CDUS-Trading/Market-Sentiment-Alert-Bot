@@ -38,11 +38,12 @@ jobs:
         run: python spx_premarket_alerts.py
 
       - name: Commit and push updated CSV log
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add market_predictions.csv
           git commit -m "📈 Update log on $(date)" || echo "No changes to commit"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push https://x-access-token:${GH_PAT}@github.com/CDUS-Trading/Market-Sentiment-Alert-Bot.git HEAD:main
+
